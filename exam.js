@@ -1,75 +1,4 @@
 
-// פונקצייה להחזרת פרטי ה Chief of staff
-function Mission1(obj) {
-    const info = {
-        דרגה: obj.commandStructure.chiefOfStaff.rank,
-        שם: obj.commandStructure.chiefOfStaff.name,
-        טלפון : obj.commandStructure.chiefOfStaff.contact.phone
-    }
-
-    return info
-}
-
-
-// פונקצייה להחזרת כמות החיילים
-function Mission2(obj) {
-    const count = obj.personnel.length
-    return count
-}
-
-
-// פונקצייה להוספת משימה חדשה ועדכון המשימה האחרונה
-function Mission3(new_deployment_obj, militaryUnit) {
-
-    // יצירת אובייקט מסוג משימה שהסתיימה 
-    ending_deployment= {
-        eventDate: militaryUnit.currentDeployment.eventDate,
-        eventDescription: militaryUnit.currentDeployment.eventDescription
-    }
-    // הוספת המשימה האחרונה להיסטוריה
-    militaryUnit.history.push(ending_deployment)
-
-    // עדכון המשימה החדשה
-    militaryUnit.currentDeployment = new_deployment_obj
-
-    return militaryUnit
-}
-
-
-function Mission4(fire_obj, militaryUnit) {
-
-    // לכידת סוג הנשק שקיבלנו
-    const fire_type = fire_obj.type
-    // משתנה שיצצביע אם הנשק כבר קיים
-    let exsist = false
-    // ריצה על כלי הנשק ובדדיקה אם הם מכילים את הנשק שקיבלנו
-    militaryUnit.firearms.forEach(element => {
-        if (element.type == fire_type) {
-            element.quantity++
-            exsist = true
-        }})
-
-    if (!exsist) {
-        militaryUnit.firearms.push(fire_obj)
-    }
-
-    return militaryUnit
-}
-
-// פונקצייה שמחזירה את אורך כלל ההכשרות
-function Mission5(militaryUnit) {
-
-    // משתנה שיכיל את משך ההכשרות
-    let sum = 0;
-
-    militaryUnit.trainingPrograms.forEach(element => {
-        sum += element.duration
-    })
-
-    return `כלל ההכשרות ביחידה הם -- ${sum}`
-}
-
-
 let militaryUnit = {
 
     name: "1st Infantry Division",
@@ -344,4 +273,120 @@ let militaryUnit = {
   
   };
   
+
+
+  // פונקצייה להחזרת פרטי ה Chief of staff
+  function Mission1(obj) {
+      const info = {
+          דרגה: obj.commandStructure.chiefOfStaff.rank,
+          שם: obj.commandStructure.chiefOfStaff.name,
+          טלפון : obj.commandStructure.chiefOfStaff.contact.phone
+      }
   
+      return info
+  }
+  
+  
+  // פונקצייה להחזרת כמות החיילים
+  function Mission2(obj) {
+      const count = obj.personnel.length
+      return count
+  }
+  
+  
+  // פונקצייה להוספת משימה חדשה ועדכון המשימה האחרונה
+  function Mission3(new_deployment_obj, militaryUnit) {
+  
+      // יצירת אובייקט מסוג משימה שהסתיימה 
+      const ending_deployment = {
+          eventDate: militaryUnit.currentDeployment.eventDate,
+          eventDescription: militaryUnit.currentDeployment.eventDescription
+      }
+      // הוספת המשימה האחרונה להיסטוריה
+      militaryUnit.history.push(ending_deployment)
+  
+      // עדכון המשימה החדשה
+      militaryUnit.currentDeployment = new_deployment_obj
+  
+      return militaryUnit
+  }
+  
+  
+  function Mission4(fire_obj, militaryUnit) {
+  
+      // לכידת סוג הנשק שקיבלנו
+      const fire_type = fire_obj.type
+      // משתנה שיצצביע אם הנשק כבר קיים
+      let exsist = false
+      // ריצה על כלי הנשק ובדדיקה אם הם מכילים את הנשק שקיבלנו
+      militaryUnit.equipment.firearms.forEach(element => {
+          if (element.type == fire_type) {
+              element.quantity += fire_obj.quantity
+              exsist = true
+          }})
+  
+      if (!exsist) {
+          militaryUnit.equipment.firearms.push(fire_obj)
+      }
+  
+      return militaryUnit
+  }
+  
+  // פונקצייה שמחזירה את אורך כלל ההכשרות
+  function Mission5(militaryUnit) {
+  
+      // משתנה שיכיל את משך ההכשרות
+      let sum = 0;
+  
+      militaryUnit.trainingPrograms.forEach(element => {
+          sum += element.duration
+      })
+  
+      return ` משך כלל ההכשרות ביחידה הם -- ${sum}`
+  }
+  
+
+
+// פונקצייה אישית  שהשתמשתי בה לבדיקת הקוד בקונסול
+  function checkCode() {
+    console.log(Mission1(militaryUnit))
+    console.log(Mission2(militaryUnit))
+  
+    const new_deployment_obj = 
+      {
+    
+          location: "גגגגגגגגגגג",
+      
+          mission: "רררררררררררררר",
+      
+          startDate: "2024-01-01",
+      
+          estimatedEndDate: "2024-12-31",
+      
+        }
+    
+    console.log(Mission3(new_deployment_obj, militaryUnit))
+  
+    const fire_obj = {
+      type: "M16 Rifle",
+    
+      quantity: 100,
+  
+      status: "Operational",
+    }
+  
+    console.log(Mission4(fire_obj, militaryUnit))
+  
+    console.log(Mission5(militaryUnit))
+
+    }
+
+    // checkCode()
+    
+  module.exports = {
+      Mission1,
+      Mission2,
+      Mission3,
+      Mission4,
+      Mission5
+  }
